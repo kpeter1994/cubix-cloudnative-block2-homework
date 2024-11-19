@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  backapp:
+    image: backapp:kpeter1994
+    container_name: backapp
+    ports:
+      - "8081:8081"
+    environment:
+      - CUBIX_HOMEWORK=kovacs_peter
+      - APP_DEFAULT_MESSAGE="Hello from backapp"
+      - SERVER_PORT=8081
+    networks:
+      - app-network
+
+  frontapp:
+    image: frontapp:kpeter1994
+    container_name: frontapp
+    ports:
+      - "8080:8080"
+    environment:
+      - CUBIX_HOMEWORK=kovacs_peter
+      - APP_DEFAULT_MESSAGE="Hello from frontapp"
+      - BACK_URL=http://backapp:8081
+    depends_on:
+      - backapp
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
